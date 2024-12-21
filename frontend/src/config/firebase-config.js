@@ -2,15 +2,16 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
+import env from "../../../env";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD75whGW5AzrT71g3lPcuS7k9O3-9QHrNE",
-  authDomain: "hostelmate-18b5d.firebaseapp.com",
-  projectId: "hostelmate-18b5d",
-  storageBucket: "hostelmate-18b5d.firebasestorage.app",
-  messagingSenderId: "320452676799",
-  appId: "1:320452676799:web:f651abbedb03af5c7a8a0a",
-  measurementId: "G-J4V79PJM0J"
+  apiKey: env.FIREBASE_API_KEY,
+  authDomain: env.FIREBASE_AUTH_DOMAIN,
+  projectId: env.PROJECT_ID,
+  storageBucket: env.STORAGE_BUCKET,
+  messagingSenderId: env.MESSAGING_SENDER_ID,
+  appId: env.APP_ID,
+  measurementId: env.MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
