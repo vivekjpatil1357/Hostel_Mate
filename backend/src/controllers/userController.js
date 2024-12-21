@@ -1,9 +1,19 @@
 const express = require('express');
 const router = express.Router();
-
+const { createUserAuth } = require('../DB/db');
+const connectDB = require('../config/db-config');
+const db=connectDB();
 const storeInDb = (req, res) => {
     const user = req.body;
-    console.log(user);
+    if (!user) {
+        return res.status(400).json({ message: "Invalid data" });
+    }
+    const newUser={
+        email :user.email,
+        password :user.password,
+        creationTime :new Date()
+    }
+    createUserAuth(db,newUser)
     res.json({ message: "User stored in DB" })
 };
 
