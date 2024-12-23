@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUserContext } from '../../userContext/UserContextProvider';
 import { auth } from '../../config/firebase-config';
-import { signInWithPopup } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { googleProvider } from '../../config/firebase-config';
 
 const UserRegister = () => {
@@ -40,6 +40,16 @@ const UserRegister = () => {
          
         }).catch((error) => {
             console.log("enable to send data to database", error.message)
+        })
+
+        //sending to firebase
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+        console.log("userCredential.user");
+            }
+        )
+        .catch((error) => {
+            console.log(error.message)
         })
 
     }

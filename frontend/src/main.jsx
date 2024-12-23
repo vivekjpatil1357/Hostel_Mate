@@ -65,7 +65,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'requestPending',
-        element: <PendingVerification/>
+        element: <PendingVerification />
       }
     ]
   },

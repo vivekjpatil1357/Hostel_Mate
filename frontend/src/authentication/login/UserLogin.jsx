@@ -5,44 +5,66 @@ import { signInWithPopup } from 'firebase/auth'
 import { googleProvider } from '../../config/firebase-config'
 import { useNavigate } from 'react-router-dom'
 import { useUserContext } from '../../userContext/UserContextProvider'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 const UserLogin = () => {
-  // const [user, setUser] = useState()
-  const set=useUserContext().setUser
+  const [user, setUser] = useState({email:'',password:''})
+  const [errors, setErrors] = useState({})
+  const set = useUserContext().setUser
   const navigate = useNavigate()
+  const handleLogin = (p) => {
+    p.preventDefault()
+    console.log(user);
+    if (!user.email || user.email === '') {
+      setErrors({ ...errors, email: 'Email is required' })
+      
+    }
+    if (!user.password || user.password === '' )  
+    {  setErrors({...errors,password:'Password is required'})
+      
+    }
+    if (!user.email || user.email === '' || !user.password || user.password === '') {
+      return
+    }
+
+      signInWithEmailAndPassword(auth, user.email, user.password)
+        .then((userCredential) => {
+          console.log(userCredential.user)
+          set(userCredential.user)
+          navigate('/verification/requestPending')
+        })
+        .catch((error) => {
+          setErrors({...errors,authError:'Invalid email or password'})
+        })
+    
+  }
   const handleGoogleSignIn = () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         console.log(result.user);
         set(result.user)
-
+        console.log(result.user)
         navigate('/verification')
-
       }).catch((error) => {
         console.log(error)
       })
   }
-  // useEffect(() => {
-  //   if (user)
-  //   console.log(user.tokenResponse.expiresIn)
-  // }, [user])
-  return (
 
+  return (
     <div className="flex justify-center items-center  w-full bg-white">
       <form className="bg-blue-200 p-6 rounded-xl shadow-xl w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
         <div className="mb-4">
-          <label htmlFor="userId" className="block text-gray-700">Hostel ID</label>
-          <input className="w-full px-3 py-2 border rounded" type="text" placeholder="Hostel ID" name="userId" id="userId" />
-        </div>
-        <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700">Email</label>
-          <input className="w-full px-3 py-2 border rounded" type="email" placeholder="Email" name="email" id="email" />
+          <input className="w-full px-3 py-2 border rounded" type="email" placeholder="Email" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} name="email" id="email" />
         </div>
+        {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
         <div className="mb-4">
           <label htmlFor="password" className="block text-gray-700">Password</label>
-          <input className="w-full px-3 py-2 border rounded" type="password" placeholder="Password" name="password" id="password" />
+          <input className="w-full px-3 py-2 border rounded" type="password" placeholder="Password" value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })} name="password" id="password" />
         </div>
-        <input type="submit" value="Login" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer" />
+        {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+        {errors.authError && <p className="text-red-500 text-xs italic">{errors.authError}</p>}
+        <input type="submit" value="Login" onClick={handleLogin} className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer" />
         <button type="button" onClick={handleGoogleSignIn} className="w-full mt-4 bg-red-500 text-white py-2 rounded hover:bg-red-600">
           Continue with Google
         </button>

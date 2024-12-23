@@ -14,6 +14,7 @@ const RequestVerification = () => {
   const [errors, setErrors] = React.useState({});
 
   const validate = () => {
+    console.log("validating");
     const newErrors = {};
     if (!formData.fullName) newErrors.fullName = 'Full Name is required';
     if (!formData.roomNumber) newErrors.roomNumber = 'Hostel Room Number is required';
@@ -40,7 +41,7 @@ const RequestVerification = () => {
     if (validate()) {
       handleSendRequest();
     }
-    return false
+    
   };
 
 

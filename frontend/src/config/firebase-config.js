@@ -2,10 +2,10 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
-import env from "../../../env";
+import env from '../../env'
 
 const firebaseConfig = {
-  apiKey: env.FIREBASE_API_KEY,
+  apiKey: 'AIzaSyD75whGW5AzrT71g3lPcuS7k9O3-9QHrNE',
   authDomain: env.FIREBASE_AUTH_DOMAIN,
   projectId: env.PROJECT_ID,
   storageBucket: env.STORAGE_BUCKET,
