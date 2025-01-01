@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 const AdminDashboardHeader = ({ email }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [user,setUser]=useState()
+  const [user, setUser] = useState()
   const navigate = useNavigate()
   const { uuid } = useParams()
   useEffect(() => {
@@ -51,14 +51,13 @@ const AdminDashboardHeader = ({ email }) => {
           <button onClick={() => { navigate(`/dashboard/admin/${uuid}/grievances`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
             Grievances
           </button>
-          <button onClick={() => { navigate(`/dashboard/admin/${uuid}/grievanceHistory`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
+          <button onClick={() => { navigate(`/dashboard/admin/${uuid}/grievance_history`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
             Grievance History
           </button>
-          <button onClick={() => { navigate(`/dashboard/admin/${uuid}/grievanceComman`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
+          <button onClick={() => { navigate(`/dashboard/admin/${uuid}/grievance_comman`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
             Grievance Commann to All
           </button>
         </div>
-
         <div>
           <button className="p-1 bg-gray-600 rounded-md" onClick={() => { navigate(`/dashboard/admin/:uuid`) }}>{"Dashboard"}</button>
         </div>

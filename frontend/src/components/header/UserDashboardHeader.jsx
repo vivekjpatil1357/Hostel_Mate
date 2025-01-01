@@ -5,32 +5,7 @@ const UserDashboardHeader = ({ email }) => {
   const [user,setUser]=useState()
   const navigate = useNavigate()
   const { uuid } = useParams()
-//   useEffect(() => {
-//     const check = () => {
-//       fetch('http://localhost:5000/getAdminById',
-//         {
-//           method: 'post',
-//           headers: {
-//             'Content-Type': 'application/json'
-//           },
-//           body: JSON.stringify({
-//             uuid
-//           })
-//         }
-//       ).then((data) => data.json())
-//         .then((user) => {
-//           console.log(user);
-//           if (user.status) {
-//             setUser(user.user)
-//             return
-//           }
-//           else
-//             navigate('login/admin')
 
-//         })
-//     }
-//     check()
-//   }, [])
   return (
     <nav className="bg-gray-800 text-white p-4">
       <div className="container mx-auto flex items-center justify-between">
@@ -51,7 +26,8 @@ const UserDashboardHeader = ({ email }) => {
           <button onClick={() => { navigate(`/dashboard/user/${uuid}/grievances`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
             Grievances
           </button>
-          <button onClick={() => { navigate(`/dashboard/user/${uuid}/grievanceHistory`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
+          
+          <button onClick={() => { navigate(`/dashboard/user/${uuid}/grievance_history`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
             Grievance History
           </button>
           <button onClick={() => { navigate(`/dashboard/user/${uuid}/hostel_voice`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">

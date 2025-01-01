@@ -25,7 +25,6 @@ const getUserDetailsByEmail = async (email) => {
     return user
 }
 
-
 const createUserDetails = async (db, userData) => {
     const newUser = new StudentDetailsModel(userData);
     var res = {}
@@ -50,13 +49,7 @@ const updateToVerify = async (id) => {
     }
 }
 
-const isEmailExist = async (email) => {
-    console.log(email);
-
-    const user = await StudentDetailsModel.findOne({ email })
-    return user
-}
-const isHostelIdExist = async (hostelId) => {
+const getUserByHostelId= async (hostelId) => {
     const user = await StudentDetailsModel.findOne({ hostelId })
     return user
 }
@@ -72,4 +65,4 @@ const createUserAuth = async (db, userData) => {
 }
 
 
-module.exports = { createUserAuth,updateToVerify,getUserDetailsByEmail, isHostelIdExist, createUserDetails, getUserById, getAllUsersAuth, getUserByEmail, getAllUsersDetails, isEmailExist }
+module.exports = { createUserAuth,updateToVerify,getUserDetailsByEmail, getUserByHostelId, createUserDetails, getUserById, getAllUsersAuth, getUserByEmail, getAllUsersDetails}

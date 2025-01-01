@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom';
+import { set } from 'mongoose';
 const AddGrievance = () => {
     const [title, setTitle] = useState('');
     const navigate=useNavigate()
-    const [complainType, setComplainType] = useState('');
+    const [complaintType, setComplaintType] = useState('');
     const [description, setDescription] = useState('');
     const [user, setUser] = useState()
     useEffect(() => {
         const c = JSON.parse(Cookies.get('user'))
         if (c) {
             setUser(c)
+            console.log(c.email);
             console.log("user found");
         }
         else {
@@ -18,17 +20,31 @@ const AddGrievance = () => {
             navigate('/login/user')
         }
     },[])
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        const grievance = {
-            complainType,
+        const complaintData = {
+            complaintType,
             description,
-            hostelId:user.hostelId,
+            hostelId:user._id,
             dateTime: new Date(),
-            complainStatus: 'Pending'
+            complaintStatus: 'Pending'
         };
-        console.log(grievance);
-        
+        const response=await (await fetch('http://localhost:5000/newComplaint', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(complaintData),
+
+        })).json()
+        if (response.status) {
+            alert('Complaint Submitted')
+            setTitle('')
+            setComplaintType('')
+            setDescription('')
+
+        }
+        console.log(complaintData);
     };
 
     return (
@@ -36,8 +52,8 @@ const AddGrievance = () => {
             <form onSubmit={handleSubmit} className="space-y-6"><div>
                 <label className="block text-sm font-medium text-gray-700">Complain Type:</label>
                 <select
-                    value={complainType}
-                    onChange={(e) => setComplainType(e.target.value)}
+                    value={complaintType}
+                    onChange={(e) => setComplaintType(e.target.value)}
                     required
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
@@ -53,10 +69,10 @@ const AddGrievance = () => {
                     <label className="block text-sm font-medium text-gray-700">Title</label>
                     <input
                         type="text"
-                        value={complainType === 'Other' ? title : complainType}
+                        value={complaintType === 'Other' ? title : complaintType}
                         onChange={(e) => setTitle(e.target.value)}
-                        required={complainType === 'Other'}
-                        disabled={complainType !== 'Other'}
+                        required={complaintType === 'Other'}
+                        disabled={complaintType !== 'Other'}
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                 </div>

@@ -42,7 +42,11 @@ const PendingStudents = () => {
     getUsers()
     console.log("hello");
  
-  },[])
+  }, [])
+  const refresh = () => {
+    getUsers()
+    
+  }
   return (
     <div className=''>
       <div className="mb-3 grid grid-cols-7 items-center bg-white shadow-md rounded-md p-4 border border-gray-300 gap-4">
@@ -86,7 +90,7 @@ const PendingStudents = () => {
       {
         users?.map((item) => 
         
-        <div key={item._id}><StudentVerificationRow user={item} /></div>  )
+        <div key={item._id}><StudentVerificationRow user={item} refresh={refresh} /></div>  )
       }
     </div>
   )

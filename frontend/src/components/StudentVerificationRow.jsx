@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ConfirmBox from './Dashboard/Admin/ConfirmBox';
 
-const StudentVerificationRow = ({ user }) => {
+const StudentVerificationRow = ({ user,refresh }) => {
     if (!user)
         return <div>No User</div>
-
-
-
     const [showImage, setShowImage] = useState(false);
     const [verificationStatus, setVerificationStatus] = useState(user.verificationStatus);
     const [url, setUrl] = useState()
@@ -57,9 +54,12 @@ const StudentVerificationRow = ({ user }) => {
             })).json()
             console.log("updated user",updated);
             setShowConfirmBox(false);
+            console.log("calling refresh");
+            
+            refresh()
         } catch (error) {
             alert("problem in verification ")
-            console.log("error in updating");
+            console.log("error in updating",error);
             
         }
 

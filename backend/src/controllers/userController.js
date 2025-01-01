@@ -1,4 +1,4 @@
-const { createUserAuth, createUserDetails, getUserById, getUserByEmail, isEmailExist, isHostelIdExist, getAllUsersDetails, updateToVerify, getUserDetailsByEmail } = require('../DB/user');
+const { createUserAuth, createUserDetails, getUserById, getUserByEmail,  getAllUsersDetails, updateToVerify, getUserDetailsByEmail, getUserByHostelId } = require('../DB/user');
 const db = require('../config/db-config')
 const fs = require('fs')
 const axios = require('axios');
@@ -68,7 +68,7 @@ const getImage = async (req, res) => {
 const isRegistered = async (req, res) => {
   const { email } = req.body
   console.log(email);
-  isEmailExist(email)
+  getUserDetailsByEmail(email)
     .then((user) => {
       if (user)
         return res.json({ status: true, user })
@@ -97,10 +97,9 @@ const isVerified = async (req, res) => {
 }
 const isValidHostelId = async (req, res) => {
   const { hostelId } = req.body
-  const user = await isHostelIdExist(hostelId)
+  const user = await getUserByHostelId(hostelId)
   if (user)
     return res.json({ status: true, user })
-
   return res.json({ status: false })
 }
 

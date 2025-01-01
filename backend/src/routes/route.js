@@ -6,7 +6,7 @@ const path = require('path')
 const fs=require('fs')
 const axios=require('axios');
 const { getAllComplaints } = require('../DB/complaint');
-const { allComplaints, newComplaint } = require('../controllers/complaintController');
+const { allComplaints, newComplaint, getComplaintById, setComplaintStatus } = require('../controllers/complaintController');
 
 const router = express.Router();
 // Set up Multer for file uploads
@@ -31,7 +31,9 @@ router.post('/getAdminById', adminById)
 
 
 router.get('/getAllGrievances', allComplaints)
-router.post('/newComplaint',newComplaint)
+router.post('/newComplaint', newComplaint)
+router.post('/userGrievanceById', getComplaintById)
+router.post('/setComplaintStatus', setComplaintStatus)
 // router.post')
 
 

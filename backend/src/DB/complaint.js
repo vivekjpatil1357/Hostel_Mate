@@ -4,10 +4,10 @@ const {  ComplaintModel } = require('./schema');
 const getAllComplaints = async () => {
     try {
         
-        const complaints = await ComplaintModel.find()
-        .populate('hostelId', 'hostelId name')
-        .exec()
-        console.log("herer i am",complaints);
+        const complaints = (await ComplaintModel.find()
+        .populate('hostelId', '_id hostelId name roomNumber')
+        .exec())
+        // console.log("herer i am",complaints);
         return complaints
     } catch (error) {
         console.log(error);
@@ -16,14 +16,26 @@ const getAllComplaints = async () => {
     
 }
 
-
-const createComplaint = async (db, complaintData) => {
-    const newComplaint = new ComplaintModel(complaintData);
-    await newComplaint.save().then(() => {
-        console.log('Complaint Created');
-    }).catch((error) => {
+const updateComplaintStatus = async (id, status) => {
+    try {
+        const complaint = await ComplaintModel.findByIdAndUpdate(id,{$set:{ complaintStatus: status }}, { new: true })
+        return complaint
+    }
+    catch (error) {
         console.log(error);
-    });
+        return null
+    }
+}
+
+const createComplaint = async (complaintData) => {
+    console.log("complaintData",complaintData);
+    const newComplaint = new ComplaintModel(complaintData);
+    try {
+        const complaint = await newComplaint.save()
+        return complaint
+    } catch (error) {
+        console.log("error in creating complaint",error);
+    }
 }
 
 const deleteComplaint = async (db, complaintData) => {
@@ -43,4 +55,4 @@ const deleteComplaint = async (db, complaintData) => {
         });
 }
 
-module.exports = { createComplaint, getAllComplaints }
+module.exports = { createComplaint,updateComplaintStatus, getAllComplaints }

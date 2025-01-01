@@ -23,7 +23,7 @@ const studentDetailsSchema = new mongoose.Schema({
 });
 
 const complaintSchema = new mongoose.Schema({
-    complainType: { type: String, required: true },
+    complaintType: { type: String, required: true },
     description: { type: String, required: true },
     dateTime: { type: Date, default: Date.now },
     hostelId: {
@@ -31,9 +31,9 @@ const complaintSchema = new mongoose.Schema({
         ref: 'StudentDetails',
         required: true
     },
-    complainStatus: {
+    complaintStatus: {
         type: String,
-        enum: ['Pending', 'Resolved', 'In Progress'],
+        enum: ['Pending', 'Resolved', 'In Progress','Discard'],
         default: 'Pending'
     }
 });
@@ -49,4 +49,3 @@ const StudentAuthModel = mongoose.model('StudentAuth', studentAuthSchema);
 const StudentDetailsModel = mongoose.model('StudentDetails', studentDetailsSchema);
 const ComplaintModel = mongoose.model('Complaint', complaintSchema);
 module.exports = { AdminModel, ComplaintModel, StudentAuthModel, StudentDetailsModel };
-

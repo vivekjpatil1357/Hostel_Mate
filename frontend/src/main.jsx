@@ -23,6 +23,9 @@ import GrievanceHistory from './components/Dashboard/Admin/GrievanceHistory.jsx'
 import AdminDashboardLayout from './layouts/AdminDashboardLayout.jsx'
 import UserDashboardLayout from './layouts/UserDashboardLayout.jsx'
 import AddGrievance from './components/Dashboard/User/AddGrievance.jsx'
+import UserGrievanceHistory from './components/Dashboard/User/UserGrievanceHistory.jsx'
+import UserGrievances from './components/Dashboard/User/UserGrievances.jsx'
+
 
 const router = createBrowserRouter([
   {
@@ -35,7 +38,6 @@ const router = createBrowserRouter([
       },
     ]
   },
-
   {
     path: '/login',
     element: <AuthLayout />,
@@ -83,7 +85,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: 'admin/:uuid',
-        element:<AdminDashboardLayout />,
+        element: <AdminDashboardLayout />,
         children: [
           {
             path: '',
@@ -105,7 +107,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'user/:uuid',
-        element:<UserDashboardLayout/>,
+        element: <UserDashboardLayout />,
         children: [
           {
             path: '',
@@ -113,12 +115,18 @@ const router = createBrowserRouter([
           },
           {
             path: 'add_grievance',
-            element:<AddGrievance/>
+            element: <AddGrievance />
+          },
+          {
+            path: 'grievance_history',
+            element: <UserGrievanceHistory />
+          },
+          {
+            path: 'grievances',
+            element: <UserGrievances />
           }
-          
         ]
       }
-
     ]
   }
 ])
