@@ -31,7 +31,7 @@ const UserComplaintRowHistory = ({ data }) => {
       </div>
       <div className="flex-1 flex items-start justify-center">
         <div className={`flex items-center ${getStatusColor(status)} px-2 py-1 rounded-md`}>
-          <p className="text-base">{status}</p>
+          <p className="text-base">{status} at { new Date(data.resolvedTime).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}</p>
         </div>
       </div>
     </div>

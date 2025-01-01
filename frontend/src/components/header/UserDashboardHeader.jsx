@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Cookies from "js-cookie";
 const UserDashboardHeader = ({ email }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [user,setUser]=useState()
   const navigate = useNavigate()
   const { uuid } = useParams()
+  useEffect(() => {
+    const c = JSON.parse(Cookies.get('user'))
+    if (c) {
+      setUser(c)
+      console.log("user found");
+    }
+  },[])
 
+    
   return (
     <nav className="bg-gray-800 text-white p-4">
       <div className="container mx-auto flex items-center justify-between">
@@ -20,17 +29,17 @@ const UserDashboardHeader = ({ email }) => {
           <div className={`w-6 h-1 bg-white transform transition-transform ${isOpen ? '-rotate-45 -translate-y-2' : ''}`}></div>
         </button>
         <div className={`flex flex-1 justify-center space-x-28 ${isOpen ? 'block' : 'hidden'} lg:flex`}>
-          <button onClick={() => { navigate(`/dashboard/user/${uuid}/add_grievance`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
+          <button onClick={() => { navigate(`/dashboard/user/${user._id}/add_grievance`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
             Add Grievance
           </button>
-          <button onClick={() => { navigate(`/dashboard/user/${uuid}/grievances`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
+          <button onClick={() => { navigate(`/dashboard/user/${user._id}/grievances`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
             Grievances
           </button>
           
-          <button onClick={() => { navigate(`/dashboard/user/${uuid}/grievance_history`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
+          <button onClick={() => { navigate(`/dashboard/user/${user._id}/grievance_history`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
             Grievance History
           </button>
-          <button onClick={() => { navigate(`/dashboard/user/${uuid}/hostel_voice`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
+          <button onClick={() => { navigate(`/dashboard/user/${user._id}/hostel_voice`) }} className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
             Hostel's Voice
           </button>
         </div>

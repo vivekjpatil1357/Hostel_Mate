@@ -16,9 +16,9 @@ const getAllComplaints = async () => {
     
 }
 
-const updateComplaintStatus = async (id, status) => {
+const updateComplaintStatus = async (id, status,resolvedTime) => {
     try {
-        const complaint = await ComplaintModel.findByIdAndUpdate(id,{$set:{ complaintStatus: status }}, { new: true })
+        const complaint = await ComplaintModel.findByIdAndUpdate(id,{$set:{ complaintStatus: status,resolvedTime:resolvedTime }}, { new: true })
         return complaint
     }
     catch (error) {

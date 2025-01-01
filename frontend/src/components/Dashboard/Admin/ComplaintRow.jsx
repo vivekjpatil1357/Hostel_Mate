@@ -21,7 +21,8 @@ const ComplaintRow = ({ data,refresh }) => {
       },
       body: JSON.stringify({
         id: data._id,
-        status
+        status,
+        resolvedTime: Date.now()
       })
     })).json()
     setStatus(status);
@@ -64,7 +65,7 @@ const ComplaintRow = ({ data,refresh }) => {
 
       <div className="flex-1 flex items-start justify-center">
         <p className="text-base text-gray-800">
-          {new Date(data.dateTime).toLocaleDateString()}
+          {new Date(data.dateTime).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}
         </p>
       </div>
 

@@ -26,6 +26,7 @@ const complaintSchema = new mongoose.Schema({
     complaintType: { type: String, required: true },
     description: { type: String, required: true },
     dateTime: { type: Date, default: Date.now },
+    resolvedTime: { type: Date },
     hostelId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'StudentDetails',

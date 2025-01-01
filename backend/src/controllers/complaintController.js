@@ -12,9 +12,9 @@ const allComplaints = async (req, res) => {
         })
 }
 const setComplaintStatus = async (req, res) => {
-    const {id,status}= req.body
+    const {id,status,resolvedTime}= req.body
     console.log(id,status);
-    const result = await updateComplaintStatus(id, status)
+    const result = await updateComplaintStatus(id, status,resolvedTime)
     if (result) {
         return res.json({ status: true, complaint: result })
     }
@@ -27,10 +27,10 @@ const getComplaintById = async (req, res) => {
         
         return res.json({
             status: true,
-            complaints: (complaints.filter((complaint) => {
+            complaints: ((complaints.filter((complaint) => {
                 return complaint.hostelId._id == id
             }
-            ))
+            ).reverse()))
         }
         )
     }
