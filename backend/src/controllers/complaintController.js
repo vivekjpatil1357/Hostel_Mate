@@ -30,7 +30,9 @@ const getComplaintById = async (req, res) => {
             complaints: ((complaints.filter((complaint) => {
                 return complaint.hostelId._id == id
             }
-            ).reverse()))
+            ).sort((a, b) => {
+                return b.resolvedTime - a.resolvedTime
+            })))
         }
         )
     }

@@ -8,7 +8,6 @@ const GrievanceHistory = () => {
     await fetch('http://localhost:5000/getAllGrievances')
       .then((d) => d.json())
       .then((complaints) => {
-        console.log(complaints)
         setComplaints(
           complaints.complaints.filter((complaint) => {
             return (
@@ -23,10 +22,6 @@ const GrievanceHistory = () => {
       })
   }
 
-  const refresh = () => {
-    fetchGrievances()
-  }
-
   useEffect(() => {
     fetchGrievances()
   }, [])
@@ -34,18 +29,26 @@ const GrievanceHistory = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="overflow-x-auto">
-        <div className="min-w-full bg-white shadow-md rounded-md p-4 border border-gray-300">
-          <div className="hidden sm:grid grid-cols-5 gap-4 text-center">
-            <p className="text-base text-gray-800">Room Number</p>
-            <p className="text-base text-gray-800">Name</p>
-            <p className="text-base text-gray-800">Type</p>
-            <p className="text-base text-gray-800">Date</p>
-            <p className="text-base text-gray-800">Status</p>
-          </div>
-        </div>
-        {complaints?.map((item) => {
-          return <ComplaintRowHistory key={item._id} data={item} />
-        })}
+        <table className="min-w-full bg-white shadow-md rounded-md border border-gray-300">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="p-4 text-left text-sm text-gray-600">Room Number</th>
+              <th className="p-4 text-left text-sm text-gray-600 w-1/4">Name</th> {/* Increased width */}
+              <th className="p-4 text-left text-sm text-gray-600">Type</th>
+              <th className="p-4 text-left text-sm text-gray-600 w-1/4">Date</th> {/* Increased width */}
+              <th className="p-4 text-left text-sm text-gray-600 w-1/4">Status</th> {/* Increased width */}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              complaints?.sort((a, b) => {
+                return new Date(b.resolvedTime) - new Date(a.resolvedTime)
+              }).map((item) => {
+                return <ComplaintRowHistory key={item._id} data={item} />
+              })
+            }
+          </tbody>
+        </table>
       </div>
     </div>
   )

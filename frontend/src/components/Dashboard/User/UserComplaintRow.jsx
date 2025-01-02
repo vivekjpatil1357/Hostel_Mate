@@ -57,20 +57,33 @@ const UserComplaintRow = ({ data ,refresh}) => {
 		}
 	};
 
+	const [showDescription, setShowDescription] = useState(false);
+
+	const handleTitleClick = () => {
+		setShowDescription(true);
+	};
+
+	const handleCloseDescription = () => {
+		setShowDescription(false);
+	};
+
 	return (
 		<div className="flex items-center justify-around bg-white shadow-md rounded-md p-4 border border-gray-300">
+			      <div className="flex-1 flex items-start justify-center border border-transparent bg-gray-300 rounded-lg p-2 hover:bg-gray-400 cursor-pointer " onClick={handleTitleClick} >
 
-			<div className="flex-1 flex items-start justify-center">
-				<p className="text-base text-gray-800">{data.complaintType}</p>
+				<p
+					className="text-base text-gray-800 cursor-pointer"
+					
+				>
+					{data.complaintType}
+				</p>
 			</div>
-
 
 			<div className="flex-1 flex items-start justify-center">
 				<p className="text-base text-gray-800">
 					{new Date(data.dateTime).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}
 				</p>
 			</div>
-
 
 			<div className="flex-1 flex items-start justify-center">
 				<div className={`flex items-center ${getStatusColor(status)} px-2 py-1 rounded-md`}>
@@ -91,6 +104,21 @@ const UserComplaintRow = ({ data ,refresh}) => {
 					onCancel={handleCancel}
 				/>
 			)}
-		</div>)
+			{showDescription && (
+				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+					<div className="bg-white p-4 rounded-md shadow-md w-1/2">
+						<h2 className="text-xl font-bold mb-2">Complaint Description</h2>
+						<p className="text-base text-gray-800 mb-4">{data.description}</p>
+						<button
+							onClick={handleCloseDescription}
+							className="bg-blue-500 text-white px-4 py-2 rounded"
+						>
+							Close
+						</button>
+					</div>
+				</div>
+			)}
+		</div>
+	);
 }
 export default UserComplaintRow;
