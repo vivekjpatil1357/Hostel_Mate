@@ -1,8 +1,13 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import 'dotenv'
-// https://vite.dev/config/
+import path from "path"
+import react from "@vitejs/plugin-react-swc"
+import { defineConfig } from "vite"
+
 export default defineConfig({
   plugins: [react()],
-  'process.env.VITE_GITHUB_ACCESS_TOKEN': JSON.stringify(process.env.VITE_GITHUB_ACCESS_TOKEN)
+  resolve: {
+    alias: {
+      // eslint-disable-next-line no-undef
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
 })

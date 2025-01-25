@@ -43,6 +43,7 @@ const uploadId = async (req, res) => {
   }
 };
 
+
 const getImage = async (req, res) => {
   const { url } = req.body
   console.log(url);

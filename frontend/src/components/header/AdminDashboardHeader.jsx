@@ -91,7 +91,7 @@ const AdminDashboardHeader = ({ email }) => {
             Grievance History
           </NavLink>
           <NavLink
-            to={`/dashboard/admin/${uuid}/grievance_comman`}
+            to={`/dashboard/admin/${uuid}/hostel_voice`}
             className={({ isActive }) =>
               isActive
                 ? 'text-gray-400 border-b-2 border-white'

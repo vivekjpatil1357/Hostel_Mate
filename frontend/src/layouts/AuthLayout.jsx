@@ -4,6 +4,7 @@ import IntroHeader from '../components/header/IntroHeader';
 import IntroFooter from '../components/footer/IntroFooter';
 
 const AuthLayout = () => {
+  
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
@@ -12,7 +13,7 @@ const AuthLayout = () => {
       </header>
 
       {/* Body */}
-      <main className="flex-grow flex  p-4 bg-blue-200">
+      <main className="flex-grow flex   bg-blue-200">
         <Outlet />
       </main>
     

@@ -9,7 +9,7 @@ const AdminDashboardLayout = () => {
       <header>
         <AdminDashboardHeader />
       </header>
-      <main className='flex-grow p-4'>
+      <main className='flex-grow p-4 flex '>
       <Outlet/>
       </main>
       <footer>

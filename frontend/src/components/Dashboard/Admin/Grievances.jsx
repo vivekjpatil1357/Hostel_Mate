@@ -51,7 +51,7 @@ const Grievances = () => {
   }
 
   return (
-    <div className="p-4">
+    <div className="p-4 w-full">
       <div className="overflow-x-auto bg-white shadow-md rounded-md p-4 border border-gray-300">
         <table className="min-w-full table-auto">
           <thead>

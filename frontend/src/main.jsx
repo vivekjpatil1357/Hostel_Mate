@@ -15,7 +15,6 @@ import PendingVerification from './components/PendingVerification.jsx'
 import RequestVerification from './authentication/verification/RequestVerification.jsx'
 import PendingVerificationLayout from './layouts/PendingVerificationLayout.jsx'
 import UserDashboard from './components/Dashboard/User/UserDashboard.jsx'
-
 import AdminDashboard from './components/Dashboard/Admin/AdminDashboard.jsx'
 import Grievances from './components/Dashboard/Admin/Grievances.jsx'
 import PendingStudents from './components/Dashboard/Admin/PendingStudents.jsx'
@@ -25,8 +24,11 @@ import UserDashboardLayout from './layouts/UserDashboardLayout.jsx'
 import AddGrievance from './components/Dashboard/User/AddGrievance.jsx'
 import UserGrievanceHistory from './components/Dashboard/User/UserGrievanceHistory.jsx'
 import UserGrievances from './components/Dashboard/User/UserGrievances.jsx'
-
-
+import UserVoice from './components/Dashboard/Comman/UserVoice.jsx'
+import About from './others/About'
+import ContactPage from './others/Contact'
+import Help from './others/Help'
+// import { Contact } from 'lucide-react'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -36,8 +38,22 @@ const router = createBrowserRouter([
         path: '',
         element: <IntroBody />,
       },
+      {
+        path: 'about',
+        element:<About/>
+      
+      },
+      {
+        path: 'contact',
+        element:<ContactPage/>
+      },
+      {
+        path: 'help',
+        element:<Help/>
+      }
     ]
   },
+  
   {
     path: '/login',
     element: <AuthLayout />,
@@ -102,6 +118,10 @@ const router = createBrowserRouter([
           {
             path: 'grievance_history',
             element: <GrievanceHistory />
+          },
+          {
+            path: 'hostel_voice',
+            element: <div></div>
           }
         ]
       },
@@ -124,6 +144,10 @@ const router = createBrowserRouter([
           {
             path: 'grievances',
             element: <UserGrievances />
+          },
+          {
+            path: 'hostel_voice',
+            element: <UserVoice/>
           }
         ]
       }

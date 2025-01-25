@@ -17,13 +17,12 @@ const ComplaintRowHistory = ({ data }) => {
                 return "bg-gray-200 text-gray-800"; // Default gray
         }
     };
-
     return (
         <tr className="border-t border-gray-300">
-            <td className="p-4 text-sm text-gray-800">{data.hostelId ? data.hostelId.roomNumber : "User Not Exist"}</td>
-            <td className="p-4 text-sm text-gray-800 w-1/4">{data.hostelId ? data.hostelId.name : "User Not Exist"}</td> {/* Increased width */}
-            <td className="p-4 text-sm text-gray-800">{data.complaintType}</td>
-            <td className="p-4 text-sm text-gray-800 w-1/4">
+            <td className="p-4 ">{data.hostelId ? data.hostelId.roomNumber : "User Not Exist"}</td>
+            <td className="p-4 w-1/4">{data.hostelId ? data.hostelId.name : "User Not Exist"}</td> {/* Increased width */}
+            <td className="p-4 ">{data.complaintType}</td>
+            <td className="p-4  w-1/4">
                 {new Date(data.dateTime).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}
             </td> {/* Increased width */}
             <td className="p-4 w-1/4">

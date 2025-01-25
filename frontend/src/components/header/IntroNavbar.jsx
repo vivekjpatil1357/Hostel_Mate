@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 
 const IntroNavbar = ({ email}) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,30 +19,32 @@ console.log(email);
         </button>
 
         <div className={`flex flex-1 justify-center space-x-28 ${isOpen ? 'block' : 'hidden'} lg:flex`}>
-          <a href="#home" className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
+          <NavLink to="/" className={({isActive})=>`block lg:inline-block ${isActive && "border-b-2"} hover:text-gray-400 text-lg lg:text-base`}>
             Home
-          </a>
-          <a href="#about" className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
-            About Us
-          </a>
-          <a href="#contact" className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
+          </NavLink>
+          <NavLink to="/about" className={({isActive})=>`block lg:inline-block ${isActive && "border-b-2"} hover:text-gray-400 text-lg lg:text-base`}>
+            About
+          </NavLink>
+          <NavLink to="/contact" className={({isActive})=>`block lg:inline-block ${isActive && "border-b-2"} hover:text-gray-400 text-lg lg:text-base`}>
             Contact
-          </a>
-          <a href="#help" className="block lg:inline-block hover:text-gray-400 text-lg lg:text-base">
+          </NavLink>
+          <NavLink to="/help" className={({isActive})=>`block lg:inline-block ${isActive && "border-b-2"} hover:text-gray-400 text-lg lg:text-base`}>
             Help
-          </a>
+          </NavLink>
+          
         </div>
         <div>
           {email}
         </div>
         {!email?(   
-        <div className="flex space-x-4 mt-4 lg:mt-0">
-          <button className="px-4 py-2 bg-blue-500 rounded hover:bg-blue-600">
+          <div className="flex space-x-4 mt-4 lg:mt-0">
+            
+          <Link to={'/login/user'} className="px-4 py-2 bg-blue-500 rounded hover:bg-blue-600">
             User Login
-          </button>
-          <button className="px-4 py-2 bg-gray-500 rounded hover:bg-gray-600">
+          </Link>
+          <Link to={'/login/admin'} className="px-4 py-2 bg-gray-500 rounded hover:bg-gray-600">
             Admin Login
-          </button>
+          </Link>
         </div>
         ):""}
       </div>

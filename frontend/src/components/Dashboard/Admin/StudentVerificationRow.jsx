@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import ConfirmBox from './ConfirmBox';
-
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from '@/components/ui/button';
 const StudentVerificationRow = ({ user, refresh }) => {
   if (!user) return <div>No User</div>;
   const [showImage, setShowImage] = useState(false);
@@ -65,29 +76,34 @@ const StudentVerificationRow = ({ user, refresh }) => {
     return status ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800';
   };
 
-    return (
-        <tr className="text-center">
-        <td className="p-4">{user.name}</td>
-        <td className="p-4">{user.mobileNumber}</td>
-        <td className="p-4">{user.roomNumber}</td>
-        <td className="p-4">{user.hostelId}</td>
-        <td className="p-4">{new Date(user.requestTime).toLocaleDateString()}</td>
-       
-        <td className="text-center">
-        <button
-          onClick={handleVerification}
-          className="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition"
-        >
-          Verify
-        </button>
-        {showConfirmBox && (
-          <ConfirmBox
-            message={`Is ${user.name} Verified?`}
-            onConfirm={handleConfirm}
-            onCancel={handleCancel}
-          />
-        )}
-                
+  return (
+    <tr className="text-center">
+      <td className="p-4">{user.name}</td>
+      <td className="p-4">{user.mobileNumber}</td>
+      <td className="p-4">{user.roomNumber}</td>
+      <td className="p-4">{user.hostelId}</td>
+      <td className="p-4">{new Date(user.requestTime).toLocaleDateString()}</td>
+
+      <td className="text-center">
+        <AlertDialog>
+          <AlertDialogTrigger><button
+            onClick={handleVerification}
+          >
+            Verify
+          </button></AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Is {user.name} is verified</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. You are Confirming that {user.name} is Student of Shivneri Boys Hostel      </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction><Button onClick={handleConfirm}>Verify</Button></AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
       </td>
       <td className="text-center">
         <button
@@ -115,7 +131,7 @@ const StudentVerificationRow = ({ user, refresh }) => {
           </div>
         </div>
       )}
-      </tr>
+    </tr>
     // <div className="grid grid-cols-7 gap-4 bg-white shadow-md rounded-md p-4 border border-gray-300 mb-4 min-w-full">
     //   <div className="text-center">{user.name}</div>
     //   <div className="text-center">{user.mobileNumber}</div>

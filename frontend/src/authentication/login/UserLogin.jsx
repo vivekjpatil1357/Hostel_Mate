@@ -1,153 +1,183 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { auth } from '../../config/firebase-config'
-import Cookies from 'js-cookie'
-import { signInWithPopup, signOut } from 'firebase/auth'
-import { googleProvider } from '../../config/firebase-config'
-import { useNavigate } from 'react-router-dom'
-import { useUserContext } from '../../userContext/UserContextProvider'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { auth, googleProvider } from '../../config/firebase-config';
+import Cookies from 'js-cookie';
+import { signInWithPopup, signOut, signInWithEmailAndPassword } from 'firebase/auth';
+import { useUserContext } from '../../userContext/UserContextProvider';
+import { motion } from 'framer-motion';
+
 const UserLogin = () => {
-  const [user, setUser] = useState({ email: '', password: '' })
-  const [errors, setErrors] = useState({})
-  const set = useUserContext().setUser
-  const navigate = useNavigate()
-  
+  const [user, setUser] = useState({ email: '', password: '' });
+  const [errors, setErrors] = useState({});
+  const set = useUserContext().setUser;
+  const navigate = useNavigate();
+
   useEffect(() => {
     function check() {
       if (auth.currentUser) {
-        console.log("signin out");
-        
-        signOut(auth)
+        console.log('Signing out');
+        signOut(auth);
       }
     }
-    check()
-  },[])
+    check();
+    scrollTo({top:0,behavior:'smooth'})
+  }, []);
 
   const handleLogin = (p) => {
-    p.preventDefault()
-    console.log(user);
+    p.preventDefault();
     if (!user.email || user.email === '') {
-      setErrors({ ...errors, email: 'Email is required' })
-
+      setErrors({ ...errors, email: 'Email is required' });
     }
     if (!user.password || user.password === '') {
-      setErrors({ ...errors, password: 'Password is required' })
-
+      setErrors({ ...errors, password: 'Password is required' });
     }
-    if (!user.email || user.email === '' || !user.password || user.password === '') {
-      return
-    }
+    if (!user.email || !user.password) return;
 
     signInWithEmailAndPassword(auth, user.email, user.password)
       .then(async (userCredential) => {
-        console.log(userCredential.user)
-        console.log("storing cookie",userCredential.user);
-        
-        Cookies.set('user', JSON.stringify(userCredential.user), { expires: 7 })
-        
-        navigate('/verification')
+        Cookies.set('user', JSON.stringify(userCredential.user), { expires: 7 });
+        navigate('/verification');
       })
-      .catch((error) => {
-        setErrors({ ...errors, authError: 'Invalid email or password' })
-      })
-  }
+      .catch(() => {
+        setErrors({ ...errors, authError: 'Invalid email or password' });
+      });
+  };
+
   const handleGoogleSignIn = () => {
-    var flag=false
+    let flag = false;
     signInWithPopup(auth, googleProvider)
       .then(async (result) => {
-        console.log("storing cookie",result.user);
-        
-      Cookies.set('user',JSON.stringify(result.user),{expires:7})
-      
-      await fetch(`http://localhost:5000/isRegistered`, {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email:result.user.email
+        Cookies.set('user', JSON.stringify(result.user), { expires: 7 });
+
+        await fetch(`http://localhost:5000/isRegistered`, {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: result.user.email }),
         })
-      }).then((res) => res.json())
-        .then((response) => {
-          console.log("response from isRegister");
-          console.log(response);
-          console.log("response is up");
-          
-          if (response.status)
-          {
-            flag=true
-            console.log("Navigating");
-            navigate('/verification/requestPending')
-            return
-          }
-          else {
-            console.log("not registresed");
-            navigate('/verification')
-            return
-          }
-        })
-      if (flag)
-        return
-        console.log("calling storeeeeee");
-        if (result.user.metadata.creationTime === result.user.metadata.lastSignInTime)
-        {
-          
+          .then((res) => res.json())
+          .then((response) => {
+            if (response.status) {
+              flag = true;
+              navigate('/verification/requestPending');
+            } else {
+              navigate('/verification');
+            }
+          });
+
+        if (!flag && result.user.metadata.creationTime === result.user.metadata.lastSignInTime) {
           fetch('http://localhost:5000/storeUserAuthInDb', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
             },
-            body: JSON.stringify(
-              {
-                email: result.user.email,
-                creatioDateTime: result.user.metadata.creationTime
-              }
-            )
-          })
-          .then((data) => data.json())
-          .then((data) => {
-            console.log("auth stored in db");
-          }).catch((err) => {
-            console.log("error ", err);
-          })
+            body: JSON.stringify({
+              email: result.user.email,
+              creationDateTime: result.user.metadata.creationTime,
+            }),
+          });
         }
-        console.log(result.user)
-        navigate('/verification')
-      }).catch((error) => {
-        console.log(error)
       })
-  }
+      .catch((error) => console.log(error));
+  };
 
   return (
-    <div className="flex justify-center items-center  w-full bg-white">
-      <form className="bg-blue-200 p-6 rounded-xl shadow-xl w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700">Email</label>
-          <input className="w-full px-3 py-2 border rounded" type="email" placeholder="Email" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} name="email" id="email" />
-        </div>
-        {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-gray-700">Password</label>
-          <input className="w-full px-3 py-2 border rounded" type="password" placeholder="Password" value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })} name="password" id="password" />
-        </div>
-        {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
-        {errors.authError && <p className="text-red-500 text-xs italic">{errors.authError}</p>}
-        <input type="submit" value="Login" onClick={handleLogin} className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer" />
-        <button type="button" onClick={handleGoogleSignIn} className="w-full mt-4 bg-red-500 text-white py-2 rounded hover:bg-red-600">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.5 }}
+      className="flex justify-center w-full items-center min-h-screen bg-gradient-to-br from-blue-300 to-blue-500"
+    >
+      <form className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+        <motion.h2
+          className="text-3xl font-extrabold text-center mb-6 text-gray-800"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          Welcome Back
+        </motion.h2>
+        <motion.div
+          className="mb-6"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+        >
+          <label htmlFor="email" className="block text-gray-700 mb-1">
+            Email
+          </label>
+          <input
+            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            type="email"
+            placeholder="Email"
+            value={user.email}
+            onChange={(e) => setUser({ ...user, email: e.target.value })}
+            id="email"
+          />
+          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+        </motion.div>
+        <motion.div
+          className="mb-6"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+        >
+          <label htmlFor="password" className="block text-gray-700 mb-1">
+            Password
+          </label>
+          <input
+            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            type="password"
+            placeholder="Password"
+            value={user.password}
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
+            id="password"
+          />
+          {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+        </motion.div>
+        {errors.authError && (
+          <motion.p
+            className="text-red-500 text-sm text-center mb-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.5 }}
+          >
+            {errors.authError}
+          </motion.p>
+        )}
+        <motion.input
+          type="submit"
+          value="Login"
+          onClick={handleLogin}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg cursor-pointer mb-4"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        />
+        <motion.button
+          type="button"
+          onClick={handleGoogleSignIn}
+          className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 rounded-lg"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
           Continue with Google
-        </button>
-        <div className="mt-4 text-center">
-          New to app? <Link to='/register/user'>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">
-              Register
-            </button>
+        </motion.button>
+        <motion.div
+          className="mt-6 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.6 }}
+        >
+          <span className="text-gray-600">New to the app?</span>
+          <Link to="/register/user" className="ml-2 text-blue-600 font-bold hover:underline">
+            Register
           </Link>
-        </div>
+        </motion.div>
       </form>
-    </div>
-  )
-}
+    </motion.div>
+  );
+};
 
-export default UserLogin
+export default UserLogin;

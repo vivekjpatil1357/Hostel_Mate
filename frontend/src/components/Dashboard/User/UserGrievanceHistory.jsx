@@ -42,29 +42,25 @@ const UserGrievanceHistory = () => {
   }, [])
 
   return (
-    <div><div>
-      <div className="flex items-center justify-around bg-white shadow-md rounded-md p-4 border border-gray-300">
-        <div className="flex-1 flex items-start justify-center">
-          <p className="text-base text-gray-800">Type</p>
-        </div>
-        <div className="flex-1 flex items-start justify-center">
-          <p className="text-base text-gray-800">
-            Date
-          </p>
-        </div>
-        <div className="flex-1 flex items-start justify-center">
-          <p className="text-base text-gray-800">
-            Status
-          </p>
-        </div>
-      </div>
-      {
-        complaints?.map((item) => {
-          return <UserComplaintRowHistory key={item._id} data={item} />
-        })
-      }
+    <div className="p-4 w-full">
+    <div className="overflow-x-auto bg-white shadow-md rounded-md p-4 border border-gray-300">
+      <table className="min-w-full table-auto">
+        <thead>
+          <tr className="bg-gray-100 text-center font-semibold text-gray-800">
+            <th className="p-4">Type</th>
+            <th className="p-4">Date</th>
+            <th className="px-20 py-4">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {complaints?.map((item) => (
+            <UserComplaintRowHistory key={item._id} data={item} />
+          ))}
+        </tbody>
+      </table>
     </div>
-    </div>
+  </div>
+  
   )
 }
 

@@ -72,15 +72,6 @@ const AdminLogin = () => {
             Login
           </button>
         </form>
-        <button
-          type="button"
-          className="w-full mt-4 px-4 py-2 font-bold text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring focus:ring-green-200"
-          onClick={() => {
-            navigate('/register/admin')
-          }}
-        >
-          Add Admin
-        </button>
       </div>
     </div>
   );
